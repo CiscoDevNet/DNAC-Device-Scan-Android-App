@@ -1,0 +1,104 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Deep Insight</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="no-scroll">
+<ion-fab padding-right top right edge>
+  <button ion-fab color="primary" (click)="doScan()" [disabled]="! scanEnabled">
+    <ion-icon name="qr-scanner"></ion-icon></button>
+</ion-fab>
+
+<!-- for mocking
+<div style="margin-top:-1rem;" padding-left>
+    <ion-label floating>Input Device:</ion-label>
+    <ion-select #C (ionChange)="updateDevice(C.value)">
+      <ion-option value="ap">Access Point</ion-option>
+      <ion-option value="ctrl">Controller</ion-option>
+      <ion-option value="switch">Switch</ion-option>
+      <ion-option value="unknown">Unknown</ion-option>
+    </ion-select>
+</div>
+-->
+<ion-list *ngIf="! scanEnabled">
+  <ion-item padding-top margin-top>
+    <ion-label color="primary" fixed>DNAC IP Address</ion-label>
+    <ion-input [(ngModel)]="dnacIp"
+    type="text" placeholder="w.x.y.z"></ion-input>
+  </ion-item>
+  <ion-item>
+    <button ion-button outline (click)="updateIp()" color="primary" item-end padding-right>Update</button>
+  </ion-item>
+</ion-list>
+
+<ion-card *ngIf="! isScanned" padding class="first-msg">
+  <h6 ion-text text-center color="light">
+    Scan a QR code to start ...
+  </h6>
+</ion-card>
+
+<ion-card style="border-radius:1rem; margin-top:5rem;"
+  [ngClass]="deviceInfo?.health"
+  *ngIf="isScanned">
+  <div style="height:15rem;" ion-text text-center padding>
+    <img src="{{ imagePath }}" height="100" width="150">
+  </div>
+
+  <h4 ion-text text-right padding-right text-uppercase color="neon">{{ macAddr }}</h4>
+  <h4 ion-text text-right padding-right text-uppercase color="neon">{{ deviceHealth?.issueCount }} issues</h4>
+</ion-card>
+
+<div *ngIf="isKnownDevice">
+<ion-card>
+  <ion-grid>
+    <ion-row *ngIf="deviceInfo?.arLink">
+      <ion-col offset-6>
+        <button ion-button outline color="neon" (click)="openARLink()">AR Experience</button>
+      </ion-col>
+    </ion-row>
+
+    <ion-row class="row-hdr">
+      <ion-col col-6 class="col-hdr">Device Info</ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col col-4>Class</ion-col>
+      <ion-col >{{ deviceInfo?.class }}</ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col col-4>Host Name</ion-col>
+      <ion-col >{{ deviceInfo?.hostname }}</ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col col-4>Mgmt IP</ion-col>
+      <ion-col >{{ deviceInfo?.ipAddr }}</ion-col>
+    </ion-row>
+
+    <ion-row class="row-hdr" onclick="showMore()">
+      <ion-col ion-text color="neon">More..</ion-col>
+        <ion-col ion-text text-right padding-right>
+        <ion-icon name="arrow-right" color="neon"></ion-icon>
+      </ion-col>
+    </ion-row>
+
+  <div>
+    <ion-row>
+      <ion-col col-4>Serial Number</ion-col>
+      <ion-col >{{ deviceInfo?._id }}</ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col col-4>Mac Address</ion-col>
+      <ion-col >{{ deviceInfo?.mac }}</ion-col>
+    </ion-row>
+
+  </div>
+
+  </ion-grid>
+</ion-card>
+
+</div>
+</ion-content>

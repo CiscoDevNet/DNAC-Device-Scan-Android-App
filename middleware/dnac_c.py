@@ -74,7 +74,7 @@ def get_device_by_serial(serial_no):
         print("Error Connecting:", errc)
         sys.exit(1)
     except requests.exceptions.HTTPError as errh:
-        print("Serial no. not found ",  serial_no
+        print("Serial no. not found ",  serial_no)
         print("Http Error:", errh)
         return
     except requests.exceptions.RequestException as err:

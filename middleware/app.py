@@ -21,6 +21,8 @@ or implied.
 """
 This script launches the middleware application.
 """
+import socket
+
 from flask import Flask, jsonify
 from flask_cors import CORS
 
@@ -45,5 +47,5 @@ def get_info_serial(serial):
 # end
 
 if __name__ == '__main__':
-    app.run(debug=True, host='x.x.x.x', port=7001)
+    app.run(debug=True, host=socket.gethostbyname(socket.gethostname()), port=7001)
 # end

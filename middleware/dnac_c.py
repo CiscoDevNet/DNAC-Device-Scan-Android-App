@@ -39,22 +39,22 @@ def get_device_by_serial(serial_no):
     DNAC_URL = 'https://'+dnac_ip+'/api/system/v1/auth/login'
 
     try:
-        print "trying auth"
+        print("trying auth ...")
         r = requests.get(DNAC_URL, headers={"Authorization": "Basic %s" % b64Val,"Content-Type": "application/json"}, verify=False)
         r.raise_for_status()
     except requests.exceptions.Timeout as errt:
-        print "Timeout Error:",errt
+        print("Timeout Error:",errt)
         sys.exit(1)
     except requests.exceptions.ConnectionError as errc:
-        print "Error Connecting:",errc
+        print("Error Connecting:",errc)
         sys.exit(1)
     except requests.exceptions.HTTPError as errh:
-        print "Http Error:",errh
+        print("Http Error:",errh)
         sys.exit(1)
     except requests.exceptions.RequestException as err:
-        print "Oops: Something Else",err
+        print("Oops: Something Else",err)
         sys.exit(1)
-    print r.text
+    print(r.text)
 
     #getting the cookie value from the returned header to set authentication for the rest of the session
     a=r.headers['Set-Cookie'].split(";")
@@ -68,17 +68,17 @@ def get_device_by_serial(serial_no):
         r = requests.get(tg, cookies=cookie, verify=False)
         r.raise_for_status()
     except requests.exceptions.Timeout as errt:
-        print "Timeout Error:", errt
+        print("Timeout Error:", errt)
         sys.exit(1)
     except requests.exceptions.ConnectionError as errc:
-        print "Error Connecting:", errc
+        print("Error Connecting:", errc)
         sys.exit(1)
     except requests.exceptions.HTTPError as errh:
-        print "Serial no. not found ",  serial_no
-        print "Http Error:", errh
+        print("Serial no. not found ",  serial_no
+        print("Http Error:", errh)
         return
     except requests.exceptions.RequestException as err:
-        print "Oops: Something Else", err
+        print("Oops: Something Else", err)
         sys.exit(1)
     response = json.loads(r.text)
 
@@ -94,5 +94,5 @@ def get_device_by_serial(serial_no):
         finalResp['health'] = 'status-red'
     finalResp['hostname'] = response["response"]["hostname"]
     json_data = json.dumps(finalResp)
-    print json_data
+    print(json_data)
     return json_data
